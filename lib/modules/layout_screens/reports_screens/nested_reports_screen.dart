@@ -20,6 +20,7 @@ class _NestedReportsScreenState extends State<NestedReportsScreen> {
  
    void initState() {
     var cubit= ReportsCubit.get(context);
+    scrollController=ScrollController();
    cubit.page=1;
         initializeDateFormatting('ar');
 cubit.scrollController=scrollController;
@@ -32,7 +33,7 @@ cubit.scrollController=scrollController;
     });
     super.initState();
   }
-ScrollController scrollController=ScrollController();
+ScrollController? scrollController;
 
   fetchData() async {
     var cubit = ReportsCubit.get(context);
@@ -42,11 +43,11 @@ ScrollController scrollController=ScrollController();
     ReportsCubit.get(context)
         .getAllReports(context, page: cubit.page);
   }
- @override
-  void dispose() {
-  scrollController.dispose();
-    super.dispose();
-  }
+//  @override
+//   void dispose() {
+//   scrollController.dispose();
+//     super.dispose();
+//   }
  
 
   @override

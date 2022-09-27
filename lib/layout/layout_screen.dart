@@ -47,6 +47,7 @@ class _LayoutState extends State<Layout> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return EarabunDrawer(mainScreen: BlocBuilder<LayoutCubit, LayoutState>(

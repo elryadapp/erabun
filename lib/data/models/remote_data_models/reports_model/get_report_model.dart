@@ -56,12 +56,13 @@ class ReportData {
     InsideCarExaminationDetailedData?   examinationInsideCarReport;
     OutsideCarDetailedReportData?       examinationOutsideCarReport;
     MechanicalCarDetailedReportData1?   examinationMechnicalReport;
-
-    ReportData({this.carExaminationId,this.pdfReport, this.carAdName, this.canFinishReport, this.reportIsFinish, this.carBodyNumberImage, this.carBodyNumber, this.examinationInsideCarReport, this.examinationOutsideCarReport, this.examinationMechnicalReport});
+   int? reportFlag;
+    ReportData({this.carExaminationId,this.reportFlag,this.pdfReport, this.carAdName, this.canFinishReport, this.reportIsFinish, this.carBodyNumberImage, this.carBodyNumber, this.examinationInsideCarReport, this.examinationOutsideCarReport, this.examinationMechnicalReport});
 
     ReportData.fromJson(Map<String, dynamic> json) {
         carExaminationId = json["car_examination_id"];
         pdfReport=json['pdf_report'];
+        reportFlag=json['report_flag'];
         carAdName = json["car_ad_name"];
         canFinishReport = json["canFinishReport"];
         reportIsFinish = json["reportIsFinish"];
@@ -75,6 +76,7 @@ class ReportData {
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = <String, dynamic>{};
         data["car_examination_id"] = carExaminationId;
+        data['report_flag']=reportFlag;
         data['pdf_report']=pdfReport;
         data["car_ad_name"] = carAdName;
         data["canFinishReport"] = canFinishReport;

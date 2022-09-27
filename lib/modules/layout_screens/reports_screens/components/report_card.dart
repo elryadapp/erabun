@@ -45,11 +45,15 @@ class ReportCard extends StatelessWidget {
                 SizedBox(
                   width: 2.w,
                 ),
-                AppText(
-                  reportsDataModel.carName!,
-                  fontWeight: FontWeight.w600,
+                Expanded(
+                  child: AppText(
+                    reportsDataModel.carName!,
+                    fontSize: 2.h,
+                    textOverflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-                const Spacer(),
+                
                 Icon(
                   IconBroken.Calendar,
                   color: AppUi.colors.subTitleColor.withOpacity(.5),

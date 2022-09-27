@@ -47,7 +47,7 @@ class FinishExaminationReportloadingState extends  ExaminationState {}
 class FinishExaminationReportloadedState extends   ExaminationState {}
 class FinishExaminationReportErrorState extends    ExaminationState {}
 
-
+class ImageSuccessState extends    ExaminationState {}
 
 
 //==================get examination data states====================

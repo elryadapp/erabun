@@ -19,7 +19,7 @@ class ExaminationToggleWidget extends StatelessWidget {
             children: [
               Expanded(
                   child: EarbunButton(
-                title: 'اجراء فحص',
+                title:"رفع صورة الفحص",
                 color: cubit.currentIndex != 0
                     ? AppUi.colors.whiteColor
                     : AppUi.colors.mainColor,

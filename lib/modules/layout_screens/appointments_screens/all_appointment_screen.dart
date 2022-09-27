@@ -200,43 +200,49 @@ class _AllAppointmentScreenState extends State<AllAppointmentScreen> {
                           );
                         }),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: AppointmentsCubit.get(context)
-                                .allAppointmentModel!
-                                .data!
-                                .isEmpty
-                            ? AppUi.colors.failureRed.withOpacity(.9)
-                            : Colors.transparent,
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 5.w,vertical: 6.h),
-                      height: state is GetPaginatedAppointmentsLoadingState
-                          ? AppointmentsCubit.get(context)
-                                  .allAppointmentModel!
-                                  .data!
-                                  .isEmpty
-                               ? 6.h
-                                  : 12.h
-                          : 0,
-                      width: double.infinity,
-                      child: Center(
-                        child: AppointmentsCubit.get(context)
-                                .allAppointmentModel!
-                                .data!
-                                .isEmpty
-                            ? AppText(
-                                'لا يوجد المزيد من المواعيد',
-                                height: 1.8.h,
-                                color: AppUi.colors.whiteColor,
-                              )
-                            : AppUtil.appLoader(height: 10.h),
-                      ),
-                    ),
-                  )
-                ],
+
+                // Align(
+                //         alignment: Alignment.bottomCenter,
+                //         child: Container(
+
+                //           decoration: BoxDecoration(
+                //             borderRadius: BorderRadius.circular(30),
+                //             color: AppointmentsCubit.get(context)
+                //                     .allAppointmentModel!
+                //                     .data!
+                //                     .isEmpty
+                //                 ? AppUi.colors.failureRed.withOpacity(.9)
+                //                 : Colors.transparent,
+                //           ),
+                //           margin: EdgeInsets.symmetric(horizontal: 5.w,vertical: 6.h),
+                //           height: state is GetPaginatedAppointmentsLoadingState
+                //               ? AppointmentsCubit.get(context)
+                //                     .allAppointmentModel!
+                //                       .data!
+                //                       .isEmpty
+                //                   ? 6.h
+                //                   : 12.h
+                //               : 0,
+                //           width: double.infinity,
+                //           child: Center(
+                //             child:AppointmentsCubit.get(context)
+                //                     .allAppointmentModel!
+                //                     .data!
+                //                     .isEmpty
+                //                 ? AppText(
+                //                     'لا يوجد المزيد من المواعيد',
+                //                     fontSize: 1.8.h,
+                //                     color: AppUi.colors.whiteColor,
+                //                   )
+                //                 : AppUtil.appLoader(height: 10.h),
+                //           ),
+                //         ),
+                //       )
+                 
+                  
+                 
+                   
+                ]
               );
             });
       },

@@ -4,11 +4,15 @@ import 'package:arboon/core/components/app_button.dart';
 import 'package:arboon/core/components/app_text.dart';
 import 'package:arboon/core/utils/app_ui.dart';
 import 'package:arboon/core/utils/app_utilities.dart';
+import 'package:arboon/core/utils/icon_broken.dart';
+import 'package:arboon/data/models/app_components_models/app_button_model.dart';
 import 'package:arboon/data/models/app_components_models/content_type.dart';
 import 'package:arboon/data/models/remote_data_models/appointment_models/all_appointment_model.dart';
+import 'package:arboon/modules/layout_screens/home_screens/components/row_button.dart';
 import 'package:buildcondition/buildcondition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class ExaminationHeader extends StatelessWidget {
@@ -57,83 +61,157 @@ class ExaminationHeader extends StatelessWidget {
                         height: 5.h,
                       ),
                       child,
-                      if (!cubit.isExaminationShowed!)
-                        Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 3.5.h, horizontal: 3.w),
-                            child: isBranched!
+
+                      Padding(
+                        padding: EdgeInsets.all(2.h),
+                        child: cubit.currentIndex == 0
+                            ? cubit.reportImage != null 
                                 ? BuildCondition(
-                                    condition: state
-                                            is FinishExaminationReportloadingState ||
+                                    condition:
                                         state is UploadPdfReportloadingState,
                                     builder: (context) =>
                                         AppUtil.appLoader(height: 10.h),
                                     fallback: (context) {
                                       return EarbunButton(
-                                        color: !cubit.examinationStatus
-                                                    .contains('false') &&
-                                                !cubit.examinationStatus
-                                                    .contains(null)
-                                            ? AppUi.colors.mainColor
-                                            : AppUi.colors.secondryColor
-                                                .withOpacity(.5),
-                                        title: 'الانتهاء من الفحص ارسل التقرير',
-                                        onTap: () {
-                                          if (cubit.currentIndex == 0 &&
-                                              !cubit.examinationStatus
-                                                  .contains('false') &&
-                                              !cubit.examinationStatus
-                                                  .contains(null)) {
-                                            cubit.finishExaminationReport(
-                                                appointmentDataModel
-                                                        ?.carExaminationId ??
-                                                    LayoutCubit.get(context)
-                                                        .scanQrCodeModel!
-                                                        .carExaminationId,
-                                                context);
-                                          } else {
-                                            AppUtil.appAlert(context,
-                                                contentType:
-                                                    ContentType.warning,
-                                                msg:
-                                                    'يجب الانتهاء من جميع الفحوص اولا');
-                                          }
-                                        },
-                                      );
-                                    })
-                                : cubit.currentIndex == 0
-                                    ? EarbunButton(
                                         color: AppUi.colors.splashColor,
-                                        title: 'تم الفحص',
-                                        onTap: () {
-                                          onCheckedTap!();
-                                        },
-                                      )
-                                    :state is UploadPdfReportloadingState? 
-                                     AppUtil.appLoader(height: 10.h)
-                                    :EarbunButton(
-                                        color: AppUi.colors.splashColor,
-                                        title: cubit.reportFile == null
-                                            ? 'اختر الملف'
-                                            : 'رفع الملف',
+                                        title: 'رفع صورة التقرير',
                                         fontSize: 1.8.h,
                                         height: 5.3.h,
                                         onTap: () {
-                                          if (cubit.currentIndex == 1) {
-                                            if (cubit.reportFile == null) {
-                                              cubit.pickReportFile();
-                                            } else {
-                                              cubit.uploadPdfReport(
-                                                  appointmentDataModel
-                                                          ?.carExaminationId ??
-                                                      LayoutCubit.get(context)
-                                                          .scanQrCodeModel!
-                                                          .carExaminationId,
-                                                  context);
-                                            }
-                                          }
+                                          cubit.uploadPdfReport(
+                                              appointmentDataModel
+                                                      ?.carExaminationId ??
+                                                  LayoutCubit.get(context)
+                                                      .scanQrCodeModel!
+                                                      .carExaminationId,
+                                              context,
+                                              0);
                                         },
-                                      )),
+                                      );
+                                    })
+                                :!cubit.isExaminationShowed!? RowButton(appButtonModel: [
+                                    AppButtonModel(
+                                        title: 'فتح الكاميرا',
+                                        icon: IconBroken.Camera,
+                                        onTap: () {
+                                          cubit.chooseImage(ImageSource.camera);
+                                        }),
+                                    AppButtonModel(
+                                        title: 'اختيار من المعرض',
+                                        icon: IconBroken.Image,
+                                        onTap: () {
+                                          cubit
+                                              .chooseImage(ImageSource.gallery);
+                                        })
+                                  ]):Container()
+                            : BuildCondition(
+                                condition: state is UploadPdfReportloadingState,
+                                builder: (context) =>
+                                    AppUtil.appLoader(height: 10.h),
+                                fallback: (context) {
+                                  return EarbunButton(
+                                    color: AppUi.colors.splashColor,
+                                    title: cubit.reportFile == null
+                                        ? 'اختر الملف'
+                                        : 'رفع الملف',
+                                    fontSize: 1.8.h,
+                                    height: 5.3.h,
+                                    onTap: () {
+                                      if (cubit.currentIndex == 1) {
+                                        if (cubit.reportFile == null) {
+                                          cubit.pickReportFile();
+                                        } else {
+                                          cubit.uploadPdfReport(
+                                              appointmentDataModel
+                                                      ?.carExaminationId ??
+                                                  LayoutCubit.get(context)
+                                                      .scanQrCodeModel!
+                                                      .carExaminationId,
+                                              context,
+                                              1);
+                                        }
+                                      }
+                                    },
+                                  );
+                                }),
+                      )
+                      // if (!cubit.isExaminationShowed!)
+                      //   Padding(
+                      //       padding: EdgeInsets.symmetric(
+                      //           vertical: 3.5.h, horizontal: 3.w),
+                      //       child: isBranched!
+                      //           ? BuildCondition(
+                      //               condition: state
+                      //                       is FinishExaminationReportloadingState ||
+                      //                   state is UploadPdfReportloadingState,
+                      //               builder: (context) =>
+                      //                   AppUtil.appLoader(height: 10.h),
+                      //               fallback: (context) {
+                      //                 return EarbunButton(
+                      //                   color: !cubit.examinationStatus
+                      //                               .contains('false') &&
+                      //                           !cubit.examinationStatus
+                      //                               .contains(null)
+                      //                       ? AppUi.colors.mainColor
+                      //                       : AppUi.colors.secondryColor
+                      //                           .withOpacity(.5),
+                      //                   title: 'الانتهاء من الفحص ارسل التقرير',
+                      //                   onTap: () {
+                      //                     if (cubit.currentIndex == 0 &&
+                      //                         !cubit.examinationStatus
+                      //                             .contains('false') &&
+                      //                         !cubit.examinationStatus
+                      //                             .contains(null)) {
+                      //                       cubit.finishExaminationReport(
+                      //                           appointmentDataModel
+                      //                                   ?.carExaminationId ??
+                      //                               LayoutCubit.get(context)
+                      //                                   .scanQrCodeModel!
+                      //                                   .carExaminationId,
+                      //                           context);
+                      //                     } else {
+                      //                       AppUtil.appAlert(context,
+                      //                           contentType:
+                      //                               ContentType.warning,
+                      //                           msg:
+                      //                               'يجب الانتهاء من جميع الفحوص اولا');
+                      //                     }
+                      //                   },
+                      //                 );
+                      //               })
+                      //           : cubit.currentIndex == 0
+                      //               ? EarbunButton(
+                      //                   color: AppUi.colors.splashColor,
+                      //                   title: 'تم الفحص',
+                      //                   onTap: () {
+                      //                     onCheckedTap!();
+                      //                   },
+                      //                 )
+                      //               :state is UploadPdfReportloadingState?
+                      //                AppUtil.appLoader(height: 10.h)
+                      //               :EarbunButton(
+                      //                   color: AppUi.colors.splashColor,
+                      //                   title: cubit.reportFile == null
+                      //                       ? 'اختر الملف'
+                      //                       : 'رفع الملف',
+                      //                   fontSize: 1.8.h,
+                      //                   height: 5.3.h,
+                      //                   onTap: () {
+                      //                     if (cubit.currentIndex == 1) {
+                      //                       if (cubit.reportFile == null) {
+                      //                         cubit.pickReportFile();
+                      //                       } else {
+                      //                         cubit.uploadPdfReport(
+                      //                             appointmentDataModel
+                      //                                     ?.carExaminationId ??
+                      //                                 LayoutCubit.get(context)
+                      //                                     .scanQrCodeModel!
+                      //                                     .carExaminationId,
+                      //                             context);
+                      //                       }
+                      //                     }
+                      //                   },
+                      //                 )),
                     ],
                   ),
                 ),

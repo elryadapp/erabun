@@ -19,13 +19,13 @@ class ExaminationReportRepository {
 
 //==========================pdf report  post========================
   static Future<Map<String, dynamic>> uploadPdfReport(
-      { appointmentId, pdfFile}) async {
-    var formData = dio.FormData.fromMap({});
+      { appointmentId, pdfFile,isPDF}) async {
+    var formData = dio.FormData.fromMap({'report_flag':isPDF});
 
     if (pdfFile != null) {
       var file = await dio.MultipartFile.fromFile(pdfFile!.path,
           filename: pdfFile.path.split('/').last,
-          contentType: MediaType("file", pdfFile.path.split('/').last));
+          contentType: MediaType(isPDF==1?"file":"image", pdfFile.path.split('/').last));
 
       formData.files.add(MapEntry('pdf_report', file));
     }

@@ -198,6 +198,8 @@ void onQRViewCreated() {
           EarbunNavigatorKeys.homeNavigatorKey.currentState!
               .pushNamed(Routes.examinationScreen);
         }
+        carNumberController.text='';
+        carImage=null;
 
         emit(UploadCarBodyloadedState());
       } else {

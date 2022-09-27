@@ -38,7 +38,7 @@ class ExaminationCubit extends Cubit<ExaminationState> {
   List<ExaminationStepModel> examinationData = [
     ExaminationStepModel(
       route: Routes.internalExamination,
-      title: 'المقصورة الداخلية',
+      title: 'التقرير',
       img: AppUi.assets.internal,
       onTap: () {
         EarbunNavigatorKeys.mainAppNavigatorKey.currentState!
@@ -417,7 +417,8 @@ class ExaminationCubit extends Cubit<ExaminationState> {
   Future<void> storeMechanicalReport(
     context, {
     int? carExaminationId,
-  }) async {
+  }) 
+  async {
     emit(StoreMechanicalReportloadingState());
     try {
       MechanicalCarDetailedReportData1 mechanicalReportData =
@@ -469,18 +470,17 @@ class ExaminationCubit extends Cubit<ExaminationState> {
     try {
       var res = await ExaminationReportRepository.finishExaminationReport(
           appointmentId: appointmentId);
-      if (res['status']) {
-        LayoutCubit.get(context).changeCurrentPageIndex(
-          1,
-        );
-         AppUtil.appAlert(context,
-            contentType: ContentType.success, msg: res['messages']);
-        await CacheHelper.clearCache(key: 'isInternalExamined$appointmentId');
-        await CacheHelper.clearCache(key: 'isMechanicalExamined$appointmentId');
-        await CacheHelper.clearCache(key: 'isExternalExamined$appointmentId');
-        examinationStatus = List.generate(3, (index) => 'false');
+                  
 
+      if (res['status']) {
+reportFile = null;
+
+        reportImage = null;
        
+        // await CacheHelper.clearCache(key: 'isInternalExamined$appointmentId');
+        // await CacheHelper.clearCache(key: 'isMechanicalExamined$appointmentId');
+        // await CacheHelper.clearCache(key: 'isExternalExamined$appointmentId');
+        // examinationStatus = List.generate(3, (index) => 'false');
 
         emit(FinishExaminationReportloadedState());
       } else {
@@ -500,36 +500,50 @@ class ExaminationCubit extends Cubit<ExaminationState> {
     isExaminationShowed = val;
     emit(ChangeIsExaminationShowedState());
   }
- 
 
   //=============pdf reports==================
   File? reportFile;
-  Future<void> pickReportFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-  allowedExtensions: [ 'pdf'],
-    );
-    
-    if (result != null) {
-
-      reportFile = File(result.files.single.path!);
-    emit(ChangeState());
+  File? reportImage;
+  Future<void> chooseImage(ImageSource imageSource) async {
+    final pickedFile = await picker.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      reportImage = File(pickedFile.path);
+      emit(ImageSuccessState());
     }
   }
 
-    Future<void> uploadPdfReport(appointmentId, context) async {
+  Future<void> pickReportFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      reportFile = File(result.files.single.path!);
+      emit(ChangeState());
+    }
+  }
+
+  Future<void> uploadPdfReport(appointmentId, context, isPDF) async {
     emit(UploadPdfReportloadingState());
     try {
-      var res = await ExaminationReportRepository.uploadPdfReport(
-          appointmentId: appointmentId,pdfFile:reportFile );
-      if (res['status']) {
-        LayoutCubit.get(context).changeCurrentPageIndex(
-          1,
-        );
-       finishExaminationReport(appointmentId,context);
-reportFile=null;
-       
 
+     var res = await ExaminationReportRepository.uploadPdfReport(
+          appointmentId: appointmentId, pdfFile:isPDF==1? reportFile:reportImage, isPDF: isPDF);
+      if (res['status']) {
+               
+ 
+        finishExaminationReport(appointmentId, context);
+        if (LayoutCubit.get(context).currentPageIndex == 0) {
+          EarbunNavigatorKeys.appointmentsNavigatorKey.currentState!
+              .pushReplacementNamed(Routes.appointment);
+        } else if (LayoutCubit.get(context).currentPageIndex == 1) {
+          EarbunNavigatorKeys.rebortsNavigatorKey.currentState!
+              .pushReplacementNamed(Routes.reports);
+        } else {
+          EarbunNavigatorKeys.homeNavigatorKey.currentState!
+              .pushReplacementNamed(Routes.mainHome);
+        }  
         emit(UploadPdfReportloadedState());
       } else {
         AppUtil.appAlert(context,
@@ -541,14 +555,18 @@ reportFile=null;
       emit(UploadPdfReportErrorState());
     }
   }
+
   GetReportModel? reportModel;
- 
+
   Future<void> getExaminationData(carExaminationId) async {
     emit(GetExaminationDataloadingState());
     try {
+      reportModel=null;
       var res = await ReportsRepositories.getExaminationReport(
           appointmentId: carExaminationId);
       reportModel = GetReportModel.fromJson(res);
+     
+
 
       if (reportModel!.status!) {
         emit(GetExaminationDataloadedState());
@@ -562,8 +580,9 @@ reportFile=null;
 
   //==============open pdf report================
   Future<void> launchPdf() async {
-   String url= AppUi.assets.networkUrlImgBase+reportModel!.data!.data!.pdfReport!;
-   emit(ViewPdfReportloadingState());
+    String url =
+        AppUi.assets.networkUrlImgBase + reportModel!.data!.data!.pdfReport!;
+    emit(ViewPdfReportloadingState());
     if (!await launchUrl(
       Uri.parse(url),
       mode: LaunchMode.externalApplication,
@@ -572,8 +591,5 @@ reportFile=null;
     }
 
     emit(ViewPdfReportloadedState());
-   
-
-}
-
+  }
 }

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Arboon</string>
+	<string>Erabun</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>arboon</string>
+	<string>Erabun</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,6 +41,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+<string>السماح لتطبيق عربون باستخدام الكاميرا لعمل مسح للكيوار كود</string>
+
+<key>io.flutter.embedded_views_preview</key>
+<string>YES</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>السماح لتطبيق عربون بالوصول الى معرض الصور </string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

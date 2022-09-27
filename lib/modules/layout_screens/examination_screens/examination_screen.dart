@@ -1,10 +1,12 @@
 import 'package:arboon/blocs/examination_cubit/examination_cubit.dart';
+import 'package:arboon/blocs/layout_cubit/layout_cubit.dart';
 import 'package:arboon/config/routes/earbun_navigator_keys.dart';
 import 'package:arboon/core/components/app_app_bar.dart';
 import 'package:arboon/core/components/app_text.dart';
 import 'package:arboon/core/network/local/cache_helper.dart';
 import 'package:arboon/core/utils/app_ui.dart';
 import 'package:arboon/core/utils/app_utilities.dart';
+import 'package:arboon/core/utils/constants.dart';
 import 'package:arboon/data/models/remote_data_models/appointment_models/all_appointment_model.dart';
 import 'package:arboon/modules/layout_screens/examination_screens/components/examination_header.dart';
 import 'package:arboon/modules/layout_screens/examination_screens/components/examination_toggle_widget.dart';
@@ -27,14 +29,14 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
   void initState() {
     var cubit = ExaminationCubit.get(context);
     cubit.getExaminationData(widget.carObg.carExaminationId);
-    cubit.examinationStatus = [
-      CacheHelper.getData(
-          key: 'isInternalExamined${widget.carObg.carExaminationId}'),
-      CacheHelper.getData(
-          key: 'isExternalExamined${widget.carObg.carExaminationId}'),
-      CacheHelper.getData(
-          key: 'isMechanicalExamined${widget.carObg.carExaminationId}'),
-    ];
+    // cubit.examinationStatus = [
+    //   CacheHelper.getData(
+    //       key: 'isInternalExamined${widget.carObg.carExaminationId}'),
+    //   CacheHelper.getData(
+    //       key: 'isExternalExamined${widget.carObg.carExaminationId}'),
+    //   CacheHelper.getData(
+    //       key: 'isMechanicalExamined${widget.carObg.carExaminationId}'),
+    // ];
 
     super.initState();
   }
@@ -64,8 +66,9 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
                   const SliverToBoxAdapter(
                     child: ExaminationToggleWidget(),
                   ),
-                if (cubit.currentIndex == 0 &&
-                    cubit.reportModel?.data?.data?.pdfReport == null)
+                if (cubit.currentIndex == 0 &&cubit.reportModel?.data?.data?.pdfReport==null
+               
+                )
                   SliverToBoxAdapter(
                     child: BuildCondition(
                         condition: state is GetExaminationDataloadingState,
@@ -73,53 +76,60 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
                         fallback: (context) {
                           return ExaminationHeader(
                               appointmentDataModel: widget.carObg,
-                              isBranched: true,
                               child: Column(
                                 children: [
-                                  ...cubit.examinationData
-                                      .asMap()
-                                      .entries
-                                      .map((e) => InkWell(
-                                            onTap: () {
-                                              EarbunNavigatorKeys
-                                                  .mainAppNavigatorKey
-                                                  .currentState!
-                                                  .pushNamed(e.value.route,
-                                                      arguments: widget.carObg);
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 1.h),
-                                              width: 50.w,
-                                              height: 15.h,
-                                              child: MainCard(
-                                                isChecked:
-                                                    cubit.examinationStatus[
-                                                            e.key] ==
-                                                        'true',
-                                                e: e.value,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        AppUi
-                                                            .colors.splashColor,
-                                                        AppUi.colors
-                                                            .secondryColor
-                                                      ],
-                                                      begin: Alignment
-                                                          .bottomCenter,
-                                                      end:
-                                                          Alignment.topCenter)),
-                                            ),
-                                          )),
+                               cubit.reportImage!=null?
+                               ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.file(cubit.reportImage!))
+                               :  Container(
+                                   margin: EdgeInsets.symmetric(
+                                       vertical: 1.h),
+                                   width: 50.w,
+                                   height: 15.h,
+                                   child: MainCard(
+                                     isChecked:false,
+                                     e: cubit.examinationData[0],
+                                   ),
+                                   decoration: BoxDecoration(
+                                       borderRadius:
+                                           BorderRadius.circular(8),
+                                       gradient: LinearGradient(
+                                           colors: [
+                                             AppUi
+                                                 .colors.splashColor,
+                                             AppUi.colors
+                                                 .secondryColor
+                                           ],
+                                           begin: Alignment
+                                               .bottomCenter,
+                                           end:
+                                               Alignment.topCenter)),
+                                 )
                                 ],
                               ));
                         }),
-                  )
-                else
+                  ),
+                  if (cubit.reportModel?.data?.data?.pdfReport!=null&& 
+               cubit.reportModel?.data?.data?.reportFlag==0
+                )
+                SliverToBoxAdapter(
+                  child: ExaminationHeader(
+                    appointmentDataModel: widget.carObg,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child:AppUtil.appCachedImage(
+                        width: Constants.getwidth(context)
+                        ,height: Constants.getHeight(context)*.8,
+                        imgUrl: AppUi.assets.networkUrlImgBase+cubit.reportModel!.data!.data!.pdfReport!)),
+                  ),
+                ),
+                
+                
+                 if (cubit.currentIndex == 1 
+             
+                   || cubit.reportModel?.data?.data?.reportFlag==1
+                )
                   SliverToBoxAdapter(
                     child: ExaminationHeader(
                             onCheckedTap: () {},
@@ -128,7 +138,10 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
                               children: [
                                 InkWell(
                                   onTap: () {
+                                    if(cubit.reportModel?.data?.data?.pdfReport!=null&& cubit.reportModel?.data?.data?.reportFlag==1){
                                     cubit.launchPdf();
+
+                                    }
                                   },
                                   child: Image.asset(
                                     AppUi.assets.pdfIcon,
@@ -149,7 +162,9 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
                                       cubit.reportFile!.path.split('/').last)
                               ],
                             )),
-                  )
+                  ),
+                 
+                  
               ],
             ),
           ),

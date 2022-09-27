@@ -22,7 +22,7 @@ class _NestedAppointmentScreenState extends State<NestedAppointmentScreen> {
   @override
   void initState() {
     initializeDateFormatting('ar');
-
+scrollController = ScrollController();
        var cubit = AppointmentsCubit.get(context);
 
 cubit.scrollController=scrollController;
@@ -36,7 +36,7 @@ cubit.scrollController=scrollController;
     super.initState();
   }
 
-  ScrollController scrollController = ScrollController();
+  ScrollController? scrollController ;
 
   fetchData() async {
     var cubit = AppointmentsCubit.get(context);
@@ -53,11 +53,11 @@ cubit.scrollController=scrollController;
     }
   }
 
-  @override
-  void dispose() {
-scrollController.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+// scrollController.dispose();
+//     super.dispose();
+//   }
 
   @override
   Widget build(BuildContext context) {
