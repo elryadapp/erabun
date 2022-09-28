@@ -6,7 +6,6 @@ import 'package:arboon/core/utils/app_ui.dart';
 import 'package:arboon/core/utils/app_utilities.dart';
 import 'package:arboon/core/utils/icon_broken.dart';
 import 'package:arboon/data/models/app_components_models/app_button_model.dart';
-import 'package:arboon/data/models/app_components_models/content_type.dart';
 import 'package:arboon/data/models/remote_data_models/appointment_models/all_appointment_model.dart';
 import 'package:arboon/modules/layout_screens/home_screens/components/row_button.dart';
 import 'package:buildcondition/buildcondition.dart';
@@ -65,8 +64,28 @@ class ExaminationHeader extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.all(2.h),
                         child: cubit.currentIndex == 0
-                            ? cubit.reportImage != null 
-                                ? BuildCondition(
+                            ?  Column(
+                              children: [
+                               
+                              
+                                
+                                !cubit.isExaminationShowed!? RowButton(appButtonModel: [
+                                    AppButtonModel(
+                                        title: 'فتح الكاميرا',
+                                        icon: IconBroken.Camera,
+                                        onTap: () {
+                                          cubit.chooseImage(ImageSource.camera);
+                                        }),
+                                    AppButtonModel(
+                                        title: 'اختيار من المعرض',
+                                        icon: IconBroken.Image,
+                                        onTap: () {
+                                          cubit
+                                              .chooseImage(ImageSource.gallery);
+                                        })
+                                  ]):Container(),
+                                  SizedBox(height: 2.h,),
+                            if(   cubit.reportImage!=null)    BuildCondition(
                                     condition:
                                         state is UploadPdfReportloadingState,
                                     builder: (context) =>
@@ -88,50 +107,52 @@ class ExaminationHeader extends StatelessWidget {
                                               0);
                                         },
                                       );
-                                    })
-                                :!cubit.isExaminationShowed!? RowButton(appButtonModel: [
-                                    AppButtonModel(
-                                        title: 'فتح الكاميرا',
-                                        icon: IconBroken.Camera,
-                                        onTap: () {
-                                          cubit.chooseImage(ImageSource.camera);
-                                        }),
-                                    AppButtonModel(
-                                        title: 'اختيار من المعرض',
-                                        icon: IconBroken.Image,
-                                        onTap: () {
-                                          cubit
-                                              .chooseImage(ImageSource.gallery);
-                                        })
-                                  ]):Container()
+                                    }),
+                              ],
+                            )
                             : BuildCondition(
                                 condition: state is UploadPdfReportloadingState,
                                 builder: (context) =>
                                     AppUtil.appLoader(height: 10.h),
                                 fallback: (context) {
-                                  return EarbunButton(
+                                  return Column(
+                                    children: [
+                                      EarbunButton(
                                     color: AppUi.colors.splashColor,
-                                    title: cubit.reportFile == null
-                                        ? 'اختر الملف'
-                                        : 'رفع الملف',
+                                    title:  'اختر الملف'
+                                       ,
                                     fontSize: 1.8.h,
                                     height: 5.3.h,
                                     onTap: () {
                                       if (cubit.currentIndex == 1) {
                                         if (cubit.reportFile == null) {
                                           cubit.pickReportFile();
-                                        } else {
-                                          cubit.uploadPdfReport(
-                                              appointmentDataModel
-                                                      ?.carExaminationId ??
-                                                  LayoutCubit.get(context)
-                                                      .scanQrCodeModel!
-                                                      .carExaminationId,
-                                              context,
-                                              1);
-                                        }
+                                        } 
                                       }
                                     },
+                                  ),
+                                  SizedBox(height: 2.h,),
+                                     if(cubit.reportFile != null) EarbunButton(
+                                        color: AppUi.colors.splashColor,
+                                        title: 
+                                           'رفع الملف',
+                                        fontSize: 1.8.h,
+                                        height: 5.3.h,
+                                        onTap: () {
+                                         if (cubit.reportFile != null) {
+                                              cubit.uploadPdfReport(
+                                                  appointmentDataModel
+                                                          ?.carExaminationId ??
+                                                      LayoutCubit.get(context)
+                                                          .scanQrCodeModel!
+                                                          .carExaminationId,
+                                                  context,
+                                                  1);
+                                            }
+                                          }
+                                        
+                                      ),
+                                    ],
                                   );
                                 }),
                       )

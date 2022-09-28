@@ -12,7 +12,7 @@ class AppointmentToggleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppointmentsCubit, AppointmentsState>(
       builder: (context, state) {
-        var cubit =AppointmentsCubit.get(context);
+        var cubit = AppointmentsCubit.get(context);
         return Container(
           height: 5.5.h,
           child: Row(
@@ -24,7 +24,6 @@ class AppointmentToggleWidget extends StatelessWidget {
                     ? AppUi.colors.whiteColor
                     : AppUi.colors.mainColor,
                 onTap: () {
-                  
                   cubit.changeAppointmentIndex(0);
                 },
                 fontSize: 2.h,
@@ -36,7 +35,6 @@ class AppointmentToggleWidget extends StatelessWidget {
               Expanded(
                   child: EarbunButton(
                       onTap: () {
-                                      
                         cubit.changeAppointmentIndex(1);
                       },
                       fontSize: 2.h,
@@ -50,7 +48,7 @@ class AppointmentToggleWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)))
             ],
           ),
-          margin: EdgeInsets.only(left:5.h,right: 5.h,top: 5.h),
+          margin: EdgeInsets.only(left: 5.h, right: 5.h, top: 5.h),
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(

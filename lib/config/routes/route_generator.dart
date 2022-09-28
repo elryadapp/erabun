@@ -1,7 +1,6 @@
 import 'package:arboon/config/routes/app_routes.dart';
 import 'package:arboon/layout/layout_screen.dart';
 import 'package:arboon/modules/auth/forget_password/forget_password.dart';
-import 'package:arboon/modules/auth/forget_password/new_password.dart';
 import 'package:arboon/modules/auth/login/login_screen.dart';
 import 'package:arboon/core/components/location_screen.dart';
 import 'package:arboon/modules/auth/register/register_screen.dart';
@@ -11,7 +10,6 @@ import 'package:arboon/modules/general_screens/termes_and_condetions_screen.dart
 import 'package:arboon/modules/layout_screens/examination_screens/electric_screen.dart';
 import 'package:arboon/modules/layout_screens/examination_screens/external_examination.dart';
 import 'package:arboon/modules/layout_screens/examination_screens/internal_examination.dart';
-import 'package:arboon/modules/layout_screens/home_screens/components/home_qr_scanner.dart';
 import 'package:arboon/modules/profile_screens/phone_edit.dart';
 
 

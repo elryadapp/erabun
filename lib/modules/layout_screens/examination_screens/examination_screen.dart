@@ -28,6 +28,8 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
   @override
   void initState() {
     var cubit = ExaminationCubit.get(context);
+    cubit.reportFile=null;
+    cubit.reportImage=null;
     cubit.getExaminationData(widget.carObg.carExaminationId);
     // cubit.examinationStatus = [
     //   CacheHelper.getData(
