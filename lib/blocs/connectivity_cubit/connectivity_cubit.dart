@@ -14,14 +14,14 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
   StreamSubscription? connectivitySubscription;
   bool hasConnection = true;
 
-
-
-  Future<void> checkConnection(context,{required Connectivity connectivity}) async {
+  Future<void> checkConnection(context,
+      {required Connectivity connectivity}) async {
     ConnectivityResult result = await connectivity.checkConnectivity();
     if (result == ConnectivityResult.none) {
       hasConnection = false;
 
-      AppUtil.appAlert(context,contentType: ContentType.failure,msg: 'انقطع الاتصال بالانترنت');
+      AppUtil.appAlert(context,
+          contentType: ContentType.failure, msg: 'انقطع الاتصال بالانترنت');
       emit(DisconnectedState());
     } else {
       hasConnection = true;

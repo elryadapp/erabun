@@ -27,6 +27,7 @@ class ExaminationScreen extends StatefulWidget {
 class _ExaminationScreenState extends State<ExaminationScreen> {
   @override
   void initState() {
+    LayoutCubit.get(context);
     var cubit = ExaminationCubit.get(context);
     cubit.reportFile=null;
     cubit.reportImage=null;

@@ -69,7 +69,7 @@ class ExaminationHeader extends StatelessWidget {
                                
                               
                                 
-                                !cubit.isExaminationShowed!? RowButton(appButtonModel: [
+                                !cubit.isExaminationShowed!&&!cubit.isFinished!? RowButton(appButtonModel: [
                                     AppButtonModel(
                                         title: 'فتح الكاميرا',
                                         icon: IconBroken.Camera,
@@ -85,7 +85,7 @@ class ExaminationHeader extends StatelessWidget {
                                         })
                                   ]):Container(),
                                   SizedBox(height: 2.h,),
-                            if(   cubit.reportImage!=null)    BuildCondition(
+                            if(   cubit.reportImage!=null&&!cubit.isFinished!)    BuildCondition(
                                     condition:
                                         state is UploadPdfReportloadingState,
                                     builder: (context) =>
@@ -110,7 +110,7 @@ class ExaminationHeader extends StatelessWidget {
                                     }),
                               ],
                             )
-                            : BuildCondition(
+                            :!cubit.isFinished!? BuildCondition(
                                 condition: state is UploadPdfReportloadingState,
                                 builder: (context) =>
                                     AppUtil.appLoader(height: 10.h),
@@ -132,7 +132,7 @@ class ExaminationHeader extends StatelessWidget {
                                     },
                                   ),
                                   SizedBox(height: 2.h,),
-                                     if(cubit.reportFile != null) EarbunButton(
+                                     if(cubit.reportFile != null&&!cubit.isFinished!) EarbunButton(
                                         color: AppUi.colors.splashColor,
                                         title: 
                                            'رفع الملف',
@@ -152,9 +152,10 @@ class ExaminationHeader extends StatelessWidget {
                                           }
                                         
                                       ),
+                                         
                                     ],
                                   );
-                                }),
+                                }):Container(),
                       )
                       // if (!cubit.isExaminationShowed!)
                       //   Padding(

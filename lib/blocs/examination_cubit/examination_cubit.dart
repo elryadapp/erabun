@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:arboon/blocs/appointments_cubit/appointments_cubit.dart';
 import 'package:arboon/blocs/layout_cubit/layout_cubit.dart';
+import 'package:arboon/blocs/reports_cubit/reports_cubit.dart';
 import 'package:arboon/config/routes/app_routes.dart';
 import 'package:arboon/config/routes/earbun_navigator_keys.dart';
 import 'package:arboon/core/network/local/cache_helper.dart';
@@ -465,14 +467,19 @@ class ExaminationCubit extends Cubit<ExaminationState> {
   }
 
   //===============finish examination Report=======================
+  bool? isFinished=false;
   Future<void> finishExaminationReport(appointmentId, context) async {
     emit(FinishExaminationReportloadingState());
     try {
+isFinished=false;
       var res = await ExaminationReportRepository.finishExaminationReport(
           appointmentId: appointmentId);
                   
 
       if (res['status']) {
+        
+        
+        isFinished=true;
 reportFile = null;
 
         reportImage = null;
@@ -524,20 +531,26 @@ reportFile = null;
     }
   }
 
+
   Future<void> uploadPdfReport(appointmentId, context, isPDF) async {
     emit(UploadPdfReportloadingState());
     try {
-
+ 
      var res = await ExaminationReportRepository.uploadPdfReport(
           appointmentId: appointmentId, pdfFile:isPDF==1? reportFile:reportImage, isPDF: isPDF);
       if (res['status']) {
                
- 
-        finishExaminationReport(appointmentId, context);
+               
+       await finishExaminationReport(appointmentId, context);
+        
         if (LayoutCubit.get(context).currentPageIndex == 0) {
+            AppointmentsCubit.get(context).scrollController=null;
+
           EarbunNavigatorKeys.appointmentsNavigatorKey.currentState!
               .pushReplacementNamed(Routes.appointment);
         } else if (LayoutCubit.get(context).currentPageIndex == 1) {
+                    ReportsCubit.get(context).scrollController=null;
+
           EarbunNavigatorKeys.rebortsNavigatorKey.currentState!
               .pushReplacementNamed(Routes.reports);
         } else {
