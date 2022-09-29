@@ -544,9 +544,12 @@ int? currentPageIndex;
                
        await finishExaminationReport(appointmentId, context);
         if (currentPageIndex == 0) {
+          AppointmentsCubit.get(context).scrollController=null;
           EarbunNavigatorKeys.appointmentsNavigatorKey.currentState!
               .pushNamed(Routes.appointment);
         } else if (currentPageIndex == 1) {
+                    ReportsCubit.get(context).scrollController=null;
+
           EarbunNavigatorKeys.rebortsNavigatorKey.currentState!
               .pushNamed(Routes.reports);
         } else {
