@@ -1,3 +1,5 @@
+
+import 'package:arboon/blocs/layout_cubit/layout_cubit.dart';
 import 'package:arboon/core/network/remote/dio_helper.dart';
 import 'package:arboon/core/network/remote/end_points.dart';
 import 'package:arboon/core/utils/constants.dart';
@@ -18,8 +20,9 @@ class ExaminationReportRepository {
   }
 
 //==========================pdf report  post========================
-  static Future<Map<String, dynamic>> uploadPdfReport(
+  static Future<Map<String, dynamic>> uploadPdfReport(context,
       { appointmentId, pdfFile,isPDF}) async {
+     
     var formData = dio.FormData.fromMap({'report_flag':isPDF});
 
     if (pdfFile != null) {

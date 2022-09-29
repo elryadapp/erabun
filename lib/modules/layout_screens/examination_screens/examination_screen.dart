@@ -1,5 +1,7 @@
+import 'package:arboon/blocs/appointments_cubit/appointments_cubit.dart';
 import 'package:arboon/blocs/examination_cubit/examination_cubit.dart';
 import 'package:arboon/blocs/layout_cubit/layout_cubit.dart';
+import 'package:arboon/blocs/reports_cubit/reports_cubit.dart';
 import 'package:arboon/config/routes/earbun_navigator_keys.dart';
 import 'package:arboon/core/components/app_app_bar.dart';
 import 'package:arboon/core/components/app_text.dart';
@@ -27,10 +29,12 @@ class ExaminationScreen extends StatefulWidget {
 class _ExaminationScreenState extends State<ExaminationScreen> {
   @override
   void initState() {
-    LayoutCubit.get(context);
+  
     var cubit = ExaminationCubit.get(context);
-    cubit.reportFile=null;
-    cubit.reportImage=null;
+ cubit.currentPageIndex=   LayoutCubit.get(context).currentPageIndex;
+
+    cubit.reportFile = null;
+    cubit.reportImage = null;
     cubit.getExaminationData(widget.carObg.carExaminationId);
     // cubit.examinationStatus = [
     //   CacheHelper.getData(
@@ -69,9 +73,8 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
                   const SliverToBoxAdapter(
                     child: ExaminationToggleWidget(),
                   ),
-                if (cubit.currentIndex == 0 &&cubit.reportModel?.data?.data?.pdfReport==null
-               
-                )
+                if (cubit.currentIndex == 0 &&
+                    cubit.reportModel?.data?.data?.pdfReport == null)
                   SliverToBoxAdapter(
                     child: BuildCondition(
                         condition: state is GetExaminationDataloadingState,
@@ -81,93 +84,85 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
                               appointmentDataModel: widget.carObg,
                               child: Column(
                                 children: [
-                               cubit.reportImage!=null?
-                               ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.file(cubit.reportImage!))
-                               :  Container(
-                                   margin: EdgeInsets.symmetric(
-                                       vertical: 1.h),
-                                   width: 50.w,
-                                   height: 15.h,
-                                   child: MainCard(
-                                     isChecked:false,
-                                     e: cubit.examinationData[0],
-                                   ),
-                                   decoration: BoxDecoration(
-                                       borderRadius:
-                                           BorderRadius.circular(8),
-                                       gradient: LinearGradient(
-                                           colors: [
-                                             AppUi
-                                                 .colors.splashColor,
-                                             AppUi.colors
-                                                 .secondryColor
-                                           ],
-                                           begin: Alignment
-                                               .bottomCenter,
-                                           end:
-                                               Alignment.topCenter)),
-                                 )
+                                  cubit.reportImage != null
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.file(cubit.reportImage!))
+                                      : Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 1.h),
+                                          width: 50.w,
+                                          height: 15.h,
+                                          child: MainCard(
+                                            isChecked: false,
+                                            e: cubit.examinationData[0],
+                                          ),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    AppUi.colors.splashColor,
+                                                    AppUi.colors.secondryColor
+                                                  ],
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter)),
+                                        )
                                 ],
                               ));
                         }),
                   ),
-                  if (cubit.reportModel?.data?.data?.pdfReport!=null&& 
-               cubit.reportModel?.data?.data?.reportFlag==0
-                )
-                SliverToBoxAdapter(
-                  child: ExaminationHeader(
-                    appointmentDataModel: widget.carObg,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child:AppUtil.appCachedImage(
-                        width: Constants.getwidth(context)
-                        ,height: Constants.getHeight(context)*.8,
-                        imgUrl: AppUi.assets.networkUrlImgBase+cubit.reportModel!.data!.data!.pdfReport!)),
-                  ),
-                ),
-                
-                
-                 if (cubit.currentIndex == 1 
-             
-                   || cubit.reportModel?.data?.data?.reportFlag==1
-                )
+                if (cubit.reportModel?.data?.data?.pdfReport != null &&
+                    cubit.reportModel?.data?.data?.reportFlag == 0)
                   SliverToBoxAdapter(
                     child: ExaminationHeader(
-                            onCheckedTap: () {},
-                            appointmentDataModel: widget.carObg,
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    if(cubit.reportModel?.data?.data?.pdfReport!=null&& cubit.reportModel?.data?.data?.reportFlag==1){
-                                    cubit.launchPdf();
-
-                                    }
-                                  },
-                                  child: Image.asset(
-                                    AppUi.assets.pdfIcon,
-                                    height: 12.h,
-                                  ),
-                                ),
-                                if (cubit.reportFile != null)
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                if (cubit.isExaminationShowed!)
-                                  const AppText('عرض التقرير'),
-                                if (cubit.reportFile != null)
-                                  AppText(
-                                      cubit.reportFile!.path.split('/').last)
-                              ],
-                            )),
+                      appointmentDataModel: widget.carObg,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: AppUtil.appCachedImage(
+                              width: Constants.getwidth(context),
+                              height: Constants.getHeight(context) * .8,
+                              imgUrl: AppUi.assets.networkUrlImgBase +
+                                  cubit.reportModel!.data!.data!.pdfReport!)),
+                    ),
                   ),
-                 
-                  
+                if (cubit.currentIndex == 1 ||
+                    cubit.reportModel?.data?.data?.reportFlag == 1)
+                  SliverToBoxAdapter(
+                    child: ExaminationHeader(
+                        onCheckedTap: () {},
+                        appointmentDataModel: widget.carObg,
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                if (cubit.reportModel?.data?.data?.pdfReport !=
+                                        null &&
+                                    cubit.reportModel?.data?.data?.reportFlag ==
+                                        1) {
+                                  cubit.launchPdf();
+                                }
+                              },
+                              child: Image.asset(
+                                AppUi.assets.pdfIcon,
+                                height: 12.h,
+                              ),
+                            ),
+                            if (cubit.reportFile != null)
+                              SizedBox(
+                                height: 3.h,
+                              ),
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            if (cubit.isExaminationShowed!)
+                              const AppText('عرض التقرير'),
+                            if (cubit.reportFile != null)
+                              AppText(cubit.reportFile!.path.split('/').last)
+                          ],
+                        )),
+                  ),
               ],
             ),
           ),

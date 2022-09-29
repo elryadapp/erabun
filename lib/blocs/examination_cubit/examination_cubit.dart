@@ -477,7 +477,7 @@ isFinished=false;
                   
 
       if (res['status']) {
-        
+
         
         isFinished=true;
 reportFile = null;
@@ -531,32 +531,28 @@ reportFile = null;
     }
   }
 
-
+int? currentPageIndex;
+  
   Future<void> uploadPdfReport(appointmentId, context, isPDF) async {
     emit(UploadPdfReportloadingState());
     try {
- 
-     var res = await ExaminationReportRepository.uploadPdfReport(
+  
+     var res = await ExaminationReportRepository.uploadPdfReport(context,
           appointmentId: appointmentId, pdfFile:isPDF==1? reportFile:reportImage, isPDF: isPDF);
       if (res['status']) {
                
                
        await finishExaminationReport(appointmentId, context);
-        
-        if (LayoutCubit.get(context).currentPageIndex == 0) {
-            AppointmentsCubit.get(context).scrollController=null;
-
+        if (currentPageIndex == 0) {
           EarbunNavigatorKeys.appointmentsNavigatorKey.currentState!
-              .pushReplacementNamed(Routes.appointment);
-        } else if (LayoutCubit.get(context).currentPageIndex == 1) {
-                    ReportsCubit.get(context).scrollController=null;
-
+              .pushNamed(Routes.appointment);
+        } else if (currentPageIndex == 1) {
           EarbunNavigatorKeys.rebortsNavigatorKey.currentState!
-              .pushReplacementNamed(Routes.reports);
+              .pushNamed(Routes.reports);
         } else {
           EarbunNavigatorKeys.homeNavigatorKey.currentState!
-              .pushReplacementNamed(Routes.mainHome);
-        }  
+              .pushNamed(Routes.mainHome);
+        }
         emit(UploadPdfReportloadedState());
       } else {
         AppUtil.appAlert(context,

@@ -54,11 +54,11 @@ cubit.scrollController=scrollController;
     }
   }
 
-  @override
-  void dispose() {
-scrollController!.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+// scrollController!.dispose();
+//     super.dispose();
+//   }
 
   @override
   Widget build(BuildContext context) {
