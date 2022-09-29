@@ -32,6 +32,8 @@ class _ExaminationScreenState extends State<ExaminationScreen> {
   
     var cubit = ExaminationCubit.get(context);
  cubit.currentPageIndex=   LayoutCubit.get(context).currentPageIndex;
+AppointmentsCubit.get(context).scrollController=null;
+                    ReportsCubit.get(context).scrollController=null;
 
     cubit.reportFile = null;
     cubit.reportImage = null;
