@@ -126,9 +126,9 @@ class ExaminationHeader extends StatelessWidget {
                                     height: 5.3.h,
                                     onTap: () {
                                       if (cubit.currentIndex == 1) {
-                                        if (cubit.reportFile == null) {
+                                      
                                           cubit.pickReportFile();
-                                        } 
+                                        
                                       }
                                     },
                                   ),
