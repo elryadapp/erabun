@@ -113,7 +113,7 @@ class _ShowAppointmentState extends State<ShowAppointment> {
                                                               .carImage ==
                                                           0) {
                                                         EarbunNavigatorKeys
-                                                            .homeNavigatorKey
+                                                            .appointmentsNavigatorKey
                                                             .currentState!
                                                             .pushNamed(
                                                           Routes.carBody,

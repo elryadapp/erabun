@@ -1,99 +1,109 @@
 
-import 'package:arboon/data/models/remote_data_models/examination_report_models/inside_car_examination_model.dart';
-import 'package:arboon/data/models/remote_data_models/examination_report_models/mechanical_car_report_model.dart';
-import 'package:arboon/data/models/remote_data_models/examination_report_models/outside_car_examination_model.dart';
-
 class GetReportModel {
-    bool? status;
-    AllExaminationReportData? data;
+  bool? status;
+  AllExaminationReportData? data;
 
-    GetReportModel({this.status, this.data});
+  GetReportModel({this.status, this.data});
 
-    GetReportModel.fromJson(Map<String, dynamic> json) {
-        status = json["status"];
-        data = json["data"] == null ? null : AllExaminationReportData.fromJson(json["data"]);
+  GetReportModel.fromJson(Map<String, dynamic> json) {
+    status = json["status"];
+    data = json["data"] == null
+        ? null
+        : AllExaminationReportData.fromJson(json["data"]);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["status"] = status;
+    if (this.data != null) {
+      data["data"] = this.data?.toJson();
     }
-
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = <String, dynamic>{};
-        data["status"] = status;
-        if(this.data != null){
-            data["data"] = this.data?.toJson();
-        }
-        return data;
-    }
+    return data;
+  }
 }
 
 class AllExaminationReportData {
-    String? token;
-    ReportData? data;
+  String? token;
+  ReportData? data;
 
-    AllExaminationReportData({this.token, this.data});
+  AllExaminationReportData({this.token, this.data});
 
-    AllExaminationReportData.fromJson(Map<String, dynamic> json) {
-        token = json["token"];
-        data = json["data"] == null ? null : ReportData.fromJson(json["data"]);
+  AllExaminationReportData.fromJson(Map<String, dynamic> json) {
+    token = json["token"];
+    data = json["data"] == null ? null : ReportData.fromJson(json["data"]);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["token"] = token;
+    if (this.data != null) {
+      data["data"] = this.data?.toJson();
     }
-
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = <String, dynamic>{};
-        data["token"] = token;
-        if(this.data != null){
-            data["data"] = this.data?.toJson();
-        }
-        return data;
-    }
+    return data;
+  }
 }
 
 class ReportData {
-    int? carExaminationId;
-    String? carAdName;
-    bool? canFinishReport;
-    bool? reportIsFinish;
-    String? pdfReport;
-    String? carBodyNumberImage;
-    String? carBodyNumber;
-    InsideCarExaminationDetailedData?   examinationInsideCarReport;
-    OutsideCarDetailedReportData?       examinationOutsideCarReport;
-    MechanicalCarDetailedReportData1?   examinationMechnicalReport;
-   int? reportFlag;
-    ReportData({this.carExaminationId,this.reportFlag,this.pdfReport, this.carAdName, this.canFinishReport, this.reportIsFinish, this.carBodyNumberImage, this.carBodyNumber, this.examinationInsideCarReport, this.examinationOutsideCarReport, this.examinationMechnicalReport});
+  int? carExaminationId;
+  String? carAdName;
+  bool? canFinishReport;
+  bool? reportIsFinish;
+  List? pdfReport;
+  List? otherReport;
 
-    ReportData.fromJson(Map<String, dynamic> json) {
-        carExaminationId = json["car_examination_id"];
-        pdfReport=json['pdf_report'];
-        reportFlag=json['report_flag'];
-        carAdName = json["car_ad_name"];
-        canFinishReport = json["canFinishReport"];
-        reportIsFinish = json["reportIsFinish"];
-        carBodyNumberImage = json["car_body_number_image"];
-        carBodyNumber = json["car_body_number"];
-        examinationInsideCarReport = json["examinationInsideCarReport"] == null ? null : InsideCarExaminationDetailedData.fromJson(json["examinationInsideCarReport"]);
-        examinationOutsideCarReport = json["examinationOutsideCarReport"] == null ? null : OutsideCarDetailedReportData.fromJson(json["examinationOutsideCarReport"]);
-        examinationMechnicalReport = json["examinationMechnicalReport"] == null ? null : MechanicalCarDetailedReportData1.fromJson(json["examinationMechnicalReport"]);
-    }
+  String? carBodyNumberImage;
+  String? carBodyNumber;
 
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = <String, dynamic>{};
-        data["car_examination_id"] = carExaminationId;
-        data['report_flag']=reportFlag;
-        data['pdf_report']=pdfReport;
-        data["car_ad_name"] = carAdName;
-        data["canFinishReport"] = canFinishReport;
-        data["reportIsFinish"] = reportIsFinish;
-        data["car_body_number_image"] = carBodyNumberImage;
-        data["car_body_number"] = carBodyNumber;
-        if(examinationInsideCarReport != null){
-            data["examinationInsideCarReport"] = examinationInsideCarReport?.toJson();
-        }
-        if(examinationOutsideCarReport != null)
-        {
-            data["examinationOutsideCarReport"] = examinationOutsideCarReport?.toJson();
-        }
-        if(examinationMechnicalReport != null){
-            data["examinationMechnicalReport"] = examinationMechnicalReport?.toJson();
-        }
-        return data;
+  int? reportFlag;
+  ReportData({
+    this.carExaminationId,
+    this.otherReport,
+    this.reportFlag,
+    this.pdfReport,
+    this.carAdName,
+    this.canFinishReport,
+    this.reportIsFinish,
+    this.carBodyNumberImage,
+    this.carBodyNumber,
+  });
+
+  ReportData.fromJson(Map<String, dynamic> json) {
+    carExaminationId = json["car_examination_id"];
+    pdfReport = json["pdf_report"] == null
+        ? null
+        : (json["pdf_report"] as List).map((e) => e).toList();
+    otherReport = json["other_report"] == null
+        ? null
+        : (json["other_report"] as List).map((e) => e).toList();
+    reportFlag = json['report_flag'];
+    carAdName = json["car_ad_name"];
+    canFinishReport = json["canFinishReport"];
+    reportIsFinish = json["reportIsFinish"];
+    carBodyNumberImage = json["car_body_number_image"];
+    carBodyNumber = json["car_body_number"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["car_examination_id"] = carExaminationId;
+    if (data["pdf_report"] != null) {
+      for(int i=0;data["pdf_report"].length;i++){
+      pdfReport?.add(data['pdf_report'][i])  ;
+
+      }
     }
+    if (data["other_report"] != null) {
+      for(int i=0;data['other_report'].length;i++){
+      otherReport?.add( data['other_report'][i] );
+
+      }
+    }
+    data["car_ad_name"] = carAdName;
+    data["canFinishReport"] = canFinishReport;
+    data["reportIsFinish"] = reportIsFinish;
+    data["car_body_number_image"] = carBodyNumberImage;
+    data["car_body_number"] = carBodyNumber;
+
+    return data;
+  }
 }
-

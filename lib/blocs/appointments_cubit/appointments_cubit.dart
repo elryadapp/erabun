@@ -73,11 +73,12 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     emit(CancelExaminationLoadingState());
     try {
       var res = await AppointmentRepository.cancelExamination(
-          appointmentId: appointmentId,
-          query: {'cancel_reason': examinationCancelResoneController.text});
+          appointmentId: appointmentId.carExaminationId,
+          query: {'cancel_reason': ''});
       if (res['status']) {
-        EarbunNavigatorKeys.appointmentsNavigatorKey.currentState!.maybePop();
         currenAppointment = null;
+         AppUtil.appAlert(context,
+            contentType: ContentType.failure, msg: res['message']);
         await getAllAppointments(context);
         emit(CancelExaminationLoadedState());
       } else {
@@ -115,7 +116,9 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
                         : 'seller'
           });
       if (res['status']) {
+        if(appointmentCancelResoneController.text.isNotEmpty){
         EarbunNavigatorKeys.appointmentsNavigatorKey.currentState!.maybePop();
+        }
         currenAppointment = null;
         selectedCancelReson = null;
         appointmentCancelResoneController.text = '';

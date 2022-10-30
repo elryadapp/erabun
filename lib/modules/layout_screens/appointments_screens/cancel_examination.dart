@@ -34,28 +34,28 @@ class CancelAppointment extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.only(start: 3.w),
-                        child: const AppText('من يريد الغاء موعد اجراء الفحص'),
-                      ),
-                      ...cubit.cancelReasone.map((e) => Row(
-                            children: [
-                              Theme(
-                                data: ThemeData(
-                                    unselectedWidgetColor:
-                                        AppUi.colors.mainColor),
-                                child: Radio(
-                                  activeColor: AppUi.colors.mainColor,
-                                    value: e,
-                                    groupValue: cubit.selectedCancelReson,
-                                    onChanged: (val) {
-                                      cubit.changeCancelationReson(val);
-                                    }),
-                              ),
+                      // Padding(
+                      //   padding: EdgeInsetsDirectional.only(start: 3.w),
+                      //   child: const AppText('من يريد الغاء موعد اجراء الفحص'),
+                      // ),
+                      // ...cubit.cancelReasone.map((e) => Row(
+                      //       children: [
+                      //         Theme(
+                      //           data: ThemeData(
+                      //               unselectedWidgetColor:
+                      //                   AppUi.colors.mainColor),
+                      //           child: Radio(
+                      //             activeColor: AppUi.colors.mainColor,
+                      //               value: e,
+                      //               groupValue: cubit.selectedCancelReson,
+                      //               onChanged: (val) {
+                      //                 cubit.changeCancelationReson(val);
+                      //               }),
+                      //         ),
                             
-                              AppText(e)
-                            ],
-                          )),
+                      //         AppText(e)
+                      //       ],
+                      //     )),
                       Padding(
                         padding: EdgeInsetsDirectional.only(start: 2.w,top: 1.5.h),
                         child: const AppText('سبب الالغاء'),
@@ -78,7 +78,7 @@ class CancelAppointment extends StatelessWidget {
                           return EarbunButton(
                             title: 'تأكيد عملية الالغاء',
                             onTap: () {
-                             cubit.cancelAppointment(cubit.currenAppointment!.carExaminationId, context);
+                             cubit.cancelAppointment(cubit.currenAppointment!, context);
                             },
                           );
                         }

@@ -42,14 +42,15 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-<string>This app needs access to location when in use</string>   
+<string>you share your car center location to this app to make clients who you serve know the center location</string>   
 	<key>NSCameraUsageDescription</key>
-<string>السماح لتطبيق عربون باستخدام الكاميرا لعمل مسح للكيوار كود</string>
-
+<string> السماح لتطبيق عربون باستخدام الكاميرا لعمل مسح للكيوار كود وكذلك لالتقاط صور التقارير التى تود رفعها</string>
+<key>io.flutter.embedded_views_preview</key>
+<true/>
 <key>io.flutter.embedded_views_preview</key>
 <string>YES</string>
 <key>NSPhotoLibraryUsageDescription</key>
-<string>السماح لتطبيق عربون بالوصول الى معرض الصور </string>
+<string>   السماح لتطبيق عربون بالوصول الى معرض الصور لرفع صور التقارير و كذلك صورة الملف الشخصى</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

@@ -21,16 +21,26 @@ class ExaminationReportRepository {
 
 //==========================pdf report  post========================
   static Future<Map<String, dynamic>> uploadPdfReport(context,
-      { appointmentId, pdfFile,isPDF}) async {
+      { appointmentId, pdfFile,reportImagesList}) async {
      
-    var formData = dio.FormData.fromMap({'report_flag':isPDF});
+    var formData = dio.FormData.fromMap({});
 
-    if (pdfFile != null) {
-      var file = await dio.MultipartFile.fromFile(pdfFile!.path,
-          filename: pdfFile.path.split('/').last,
-          contentType: MediaType(isPDF==1?"file":"image", pdfFile.path.split('/').last));
+    if (pdfFile != null||reportImagesList!=null) {
+      for(int i=0;i<pdfFile.length;i++){
+ var file = await dio.MultipartFile.fromFile(pdfFile[i]!.path,
+          filename: pdfFile[i].path.split('/').last,
+          contentType: MediaType("file", pdfFile[i].path.split('/').last));
+ formData.files.add(MapEntry('pdf_report[$i]', file));
+      }
+            for(int i=0;i<reportImagesList.length;i++){
+ var file = await dio.MultipartFile.fromFile(reportImagesList[i]!.path,
+          filename: reportImagesList[i].path.split('/').last,
+          contentType: MediaType("image", reportImagesList[i].path.split('/').last));
+ formData.files.add(MapEntry('other_report[$i]', file));
+      }
+     
 
-      formData.files.add(MapEntry('pdf_report', file));
+     
     }
     var response = await DioHelper.postData(
         token: 'Bearer ${Constants.token}',

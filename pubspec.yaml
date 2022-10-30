@@ -44,6 +44,7 @@ dependencies:
   connectivity_plus: ^2.3.6
   time_range_picker: ^2.2.0
   file_picker: ^5.1.0
+  pdf_viewer_plugin: ^2.0.1
  
 
  

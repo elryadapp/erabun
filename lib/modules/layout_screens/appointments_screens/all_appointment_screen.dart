@@ -115,7 +115,73 @@ class _AllAppointmentScreenState extends State<AllAppointmentScreen> {
                                                           ? Routes.cancelExamination
                                                           : Routes
                                                               .cancelAppointment);
-                                                } else {
+                                                } 
+                                                else if( cubit
+                                                      .appointmentList[index]
+                                                      .status ==
+                                                  'confirmed') {
+AppUtil.appDialoge(
+                                                      content: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            AppText(
+                                                              'هل ترغب فى تاكيد الغاء الفحص؟',
+                                                              color: AppUi
+                                                                  .colors.mainColor,
+                                                            ),
+                                                            Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          3.w,
+                                                                      vertical:
+                                                                          2.5.h),
+                                                              child: Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                      child:
+                                                                          EarbunButton(
+                                                                    title: 'تاكيد',
+                                                                    fontSize: 1.8.h,
+                                                                    onTap: () {
+                                                                      cubit.cancelExamination( cubit.appointmentList[index], context);
+                                                                      EarbunNavigatorKeys.mainAppNavigatorKey.currentState!.maybePop();
+
+                                                                    },
+                                                                    color: AppUi
+                                                                        .colors
+                                                                        .confirmationBtnColor
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                    height: 4.5.h,
+                                                                  )),
+                                                                  SizedBox(
+                                                                      width: 3.w),
+                                                                  Expanded(
+                                                                      child:
+                                                                          EarbunButton(
+                                                                    title: 'الغاء',
+                                                                    fontSize: 1.8.h,
+                                                                    onTap: () {
+                                                                      EarbunNavigatorKeys.mainAppNavigatorKey.currentState!.maybePop();
+                                                                    },
+                                                                    color: AppUi
+                                                                        .colors
+                                                                        .failureRed
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                    height: 4.5.h,
+                                                                  ))
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ]),
+                                                      context: context,
+                                                      title: 'تنبيه');
+                                                  }
+                                                
+                                                else{
                                                   AppUtil.appDialoge(
                                                       content: Column(
                                                           mainAxisSize:

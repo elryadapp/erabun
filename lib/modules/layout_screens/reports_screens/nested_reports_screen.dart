@@ -43,12 +43,7 @@ ScrollController? scrollController;
     ReportsCubit.get(context)
         .getAllReports(context, page: cubit.page);
   }
-//  @override
-//   void dispose() {
-//   scrollController!.dispose();
-//     super.dispose();
-//   }
- 
+
 
   @override
   Widget build(BuildContext context) {

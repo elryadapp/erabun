@@ -59,14 +59,9 @@ class RouterGenerator {
       case Routes.privacyPolicy:
         return MaterialPageRoute(
             builder: (context) => const PrivacyPolicyScreen());
-      case Routes.externalExamination:
-        return MaterialPageRoute(
-            builder: (context) =>  ExternalExamination(carObg:settings.arguments ,));
-      case Routes.internalExamination:
-        return MaterialPageRoute(
-            builder: (context) =>  InternalExamination(carObg: settings.arguments));
-      case Routes.elctricExamination:
-        return MaterialPageRoute(builder: (context) =>  ElectricScreen(carObg:settings.arguments ,));
+      
+     
+   
       
       case Routes.location:
         return MaterialPageRoute(builder: (context) => const LocationScreen());
